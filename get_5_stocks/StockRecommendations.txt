@@ -1,0 +1,5 @@
+1. Nvidia
+2. Apple
+3. Nike
+4. Amazon
+5. Walmart

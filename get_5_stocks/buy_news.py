@@ -1,9 +1,17 @@
 import finnhub
 import datetime
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Access the BUSINESS_API variable
+business_api_key = os.getenv("BUSINESS_API")
 
 # Initialize the Finnhub client
 finnhub_client = finnhub.Client(
-    api_key="cn9e659r01qoee9a1n10cn9e659r01qoee9a1n1g")
+    api_key=business_api_key)
 
 # Get the current UNIX timestamp
 current_time = datetime.datetime.now().timestamp()
