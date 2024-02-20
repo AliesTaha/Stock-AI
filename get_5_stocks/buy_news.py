@@ -27,7 +27,7 @@ def unix_to_datetime(unix_timestamp):
 
 
 # Create a file with the current date and time as the filename
-file_name = unix_to_datetime(current_time) + "_news.txt"
+file_name = unix_to_datetime(current_time) + "_buy_news.txt"
 
 # Open the file in write mode
 with open(file_name, 'w') as file:

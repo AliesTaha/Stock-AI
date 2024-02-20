@@ -11,13 +11,13 @@ def unix_to_datetime(unix_timestamp):
 
 # Get the current UNIX timestamp
 current_time = datetime.datetime.now().timestamp()
-file_name = unix_to_datetime(current_time) + "_news.txt"
+file_name = unix_to_datetime(current_time) + "_buy_news.txt"
 
 # Check if today's file exists, if not, get yesterday's file name
 if not os.path.isfile(str(file_name)):
     # Subtracting 24 hours in seconds
     yesterday_time = current_time - (24 * 60 * 60)
-    file_name = unix_to_datetime(yesterday_time) + "_news.txt"
+    file_name = unix_to_datetime(yesterday_time) + "_buy_news.txt"
 
 with open(file_name, 'r') as file:
     input_text = file.read()
@@ -32,7 +32,7 @@ completion = client.chat.completions.create(
 
 response = completion.choices[0].message.content
 
-with open("StockRecommendations.txt", 'w') as file:
+with open("stocks_to_buy.txt", 'w') as file:
     file.write(response)
 
 completion = client.chat.completions.create(
@@ -53,5 +53,5 @@ while i < (len(ticker_symbols))-1:
     else:
         final.append(ticker_symbols[i])
         i += 1
-with open("tickers.csv", 'w') as file:
+with open("tickers_to_buy.csv", 'w') as file:
     file.write("".join(final))
