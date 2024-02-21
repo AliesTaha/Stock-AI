@@ -7,8 +7,13 @@ import chromedriver_autoinstaller
 from dotenv import load_dotenv
 import os, time, random, json
 from enum import Enum
+import argparse
 
-load_dotenv()
+from os.path import join, dirname
+from dotenv import load_dotenv
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
 chromedriver_autoinstaller.install()
 
 api_email = os.getenv("API_EMAIL")
@@ -37,7 +42,9 @@ class InvestopediaAPI:
     BASE_URL = 'https://www.investopedia.com/simulator'
 
     def __init__(self, email, password):
-        self.driver = webdriver.Chrome()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
+        self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(1)
         self.driver.maximize_window()
         self.wait = WebDriverWait(self.driver, 10)
@@ -118,3 +125,109 @@ class InvestopediaAPI:
             })
 
         return json.dumps(ret, indent=4)
+    
+    def get_holdings(self):
+        self.driver.get(self.BASE_URL + "/portfolio")
+
+        holdings_table = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='holdings-table']")
+        holdings = holdings_table.find_element(By.TAG_NAME, "tbody").find_elements(By.TAG_NAME, "tr")
+        ret = []
+
+        for holding in holdings:
+            symbol = holding.find_element(By.CSS_SELECTOR, "a > span")
+            description = holding.find_element(By.CSS_SELECTOR, "div[data-cy='description']")
+            current_price = holding.find_element(By.CSS_SELECTOR, "div[data-cy='current-price']")
+            day_gain_loss = holding.find_element(By.CSS_SELECTOR, "div[data-cy='day-gain-dollar']").find_element(By.TAG_NAME, "div")
+            purchase_price = holding.find_element(By.CSS_SELECTOR, "div[data-cy='purchase-price']")
+            quantity = holding.find_element(By.CSS_SELECTOR, "div[data-cy='quantity']")
+            total_value = quantity = holding.find_element(By.CSS_SELECTOR, "div[data-cy='total-value']")
+            total_gain_loss = holding.find_element(By.CSS_SELECTOR, "div[data-cy='total-gain-dollar']").find_element(By.TAG_NAME, "div")
+
+            day_gain_loss = day_gain_loss.text.split("\n")
+            day_gain_dollar = day_gain_loss[0]
+            day_gain_percentage = day_gain_loss[1][1:-1]
+
+            total_gain_loss = total_gain_loss.text.split("\n")
+            total_gain_dollar = total_gain_loss[0]
+            total_gain_percentage = total_gain_loss[1][1:-1]
+            ret.append({
+                "Symbol": symbol.text,
+                "Description": description.text,
+                "Current Price": current_price.text,
+                "Dollar Day Gain/Loss": day_gain_dollar,
+                "Percentage Day Gain/Loss": day_gain_percentage,
+                "Purchase Price": purchase_price.text,
+                "Quantity": quantity.text,
+                "Total Value": total_value.text,
+                "Dollar Total Gain/Loss": total_gain_dollar,
+                "Percentage Total Gain/Loss": total_gain_percentage,
+            })
+
+        return json.dumps(ret, indent=4)
+    
+    def get_portfolio_status(self):
+        self.driver.get(self.BASE_URL + "/portfolio")
+
+        total_value = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='total-value']")
+        day_change_value = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='day-change-value']").find_element(By.TAG_NAME, "div").text.split(" ")
+        total_change_value =self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='total-change-value']").find_element(By.TAG_NAME, "div").text.split(" ")
+        ret = {}
+        ret["Total Value"] = total_value.text
+        ret["Day Dollar Gain/Loss"] = day_change_value[0]
+        ret["Day Percentage Gain/Loss"] = day_change_value[1][1:-1]
+        ret["Total Dollar Gain/Loss"] = total_change_value[0]
+        ret["Total Percentage Gain/Loss"] = total_change_value[1][1:-1]
+
+        return json.dumps(ret, indent=4)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Investopedia API Tool")
+    
+    parser.add_argument("--operation", choices=["trade", "get_pending_trades", "get_holdings", "get_portfolio_status"], help="The operation to perform.")
+    
+    parser.add_argument("--symbol", help="The symbol for trading.")
+    parser.add_argument("--action", choices=["buy", "sell", "short", "sell_to_cover"], help="The action for trading: buy, sell, short, sell_to_cover.")
+    parser.add_argument("--quantity", type=int, help="The quantity for trading.")
+    
+    parser.add_argument("--order_type", choices=["limit", "market", "stop_limit"], help="The order type: limit, market, stop_limit.")
+    parser.add_argument("--duration", choices=["day_only", "good_until_cancelled"], help="The duration: day_only, good_until_cancelled.")
+    
+    args = parser.parse_args()
+    
+    action_mapping = {
+        "buy": TradeAction.BUY,
+        "sell": TradeAction.SELL,
+        "short": TradeAction.SHORT,
+        "sell_to_cover": TradeAction.SELL_TO_COVER
+    }
+    
+    order_type_mapping = {
+        "limit": TradeOrderType.LIMIT,
+        "market": TradeOrderType.MARKET,
+        "stop_limit": TradeOrderType.STOP_LIMIT
+    }
+    
+    duration_mapping = {
+        "day_only": TradeDuration.DAY_ONLY,
+        "good_until_cancelled": TradeDuration.GOOD_UNTIL_CANCELLED
+    }
+    
+    client = InvestopediaAPI(api_email, api_password)
+    
+    if args.operation == "trade":
+        if args.symbol and args.action and args.quantity and args.order_type and args.duration:
+            action = action_mapping[args.action]
+            order_type = order_type_mapping[args.order_type]
+            duration = duration_mapping[args.duration]
+            client.trade(args.symbol, action, args.quantity, order_type, duration)
+        else:
+            print("Missing required arguments for trading.")
+    elif args.operation == "get_pending_trades":
+        print(client.get_pending_trades())
+    elif args.operation == "get_holdings":
+        print(client.get_holdings())
+    elif args.operation == "get_portfolio_status":
+        print(client.get_portfolio_status())
+    else:
+        print("Invalid operation or no operation specified.")
+
