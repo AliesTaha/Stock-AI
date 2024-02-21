@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException
+from selenium.common.exceptions import NoSuchElementException
 import chromedriver_autoinstaller
 from dotenv import load_dotenv
 import os, time, random, json
@@ -68,6 +68,15 @@ class InvestopediaAPI:
 
     def trade(self, symbol, action, quantity, order_type, duration):
         self.driver.get(self.BASE_URL + "/trade/stocks")
+
+        try:
+            dialog = self.driver.find_element(By.XPATH, '//div[@role="dialog"]')
+            time.sleep(2)
+            dialog.find_element(By.TAG_NAME, "button").click()
+            time.sleep(2)
+        except NoSuchElementException:
+            pass
+        
         symbol_input = self.driver.find_element(By.XPATH, "//input[@placeholder='Look up Symbol/Company Name']")
         symbol_input.send_keys(symbol)
         symbol_result = self.wait.until(EC.visibility_of_element_located((By.XPATH, "//span[@data-cy='symbol-name']")))
@@ -107,6 +116,14 @@ class InvestopediaAPI:
     def get_pending_trades(self):
         self.driver.get(self.BASE_URL + "/portfolio")
 
+        try:
+            dialog = self.driver.find_element(By.XPATH, '//div[@role="dialog"]')
+            time.sleep(2)
+            dialog.find_element(By.TAG_NAME, "button").click()
+            time.sleep(2)
+        except NoSuchElementException:
+            pass
+
         pending_trades = self.driver.find_elements(By.CSS_SELECTOR, "div[data-cy='pending-table-row']")
         ret = []
 
@@ -128,6 +145,14 @@ class InvestopediaAPI:
     
     def get_holdings(self):
         self.driver.get(self.BASE_URL + "/portfolio")
+
+        try:
+            dialog = self.driver.find_element(By.XPATH, '//div[@role="dialog"]')
+            time.sleep(2)
+            dialog.find_element(By.TAG_NAME, "button").click()
+            time.sleep(2)
+        except NoSuchElementException:
+            pass
 
         holdings_table = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='holdings-table']")
         holdings = holdings_table.find_element(By.TAG_NAME, "tbody").find_elements(By.TAG_NAME, "tr")
@@ -167,6 +192,14 @@ class InvestopediaAPI:
     
     def get_portfolio_status(self):
         self.driver.get(self.BASE_URL + "/portfolio")
+
+        try:
+            dialog = self.driver.find_element(By.XPATH, '//div[@role="dialog"]')
+            time.sleep(2)
+            dialog.find_element(By.TAG_NAME, "button").click()
+            time.sleep(2)
+        except NoSuchElementException:
+            pass
 
         total_value = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='total-value']")
         day_change_value = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='day-change-value']").find_element(By.TAG_NAME, "div").text.split(" ")
