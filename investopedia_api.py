@@ -14,10 +14,11 @@ from dotenv import load_dotenv
 
 dotenv_path = join(dirname(__file__), '.env')
 load_dotenv(dotenv_path)
-chromedriver_autoinstaller.install()
 
 api_email = os.getenv("API_EMAIL")
 api_password = os.getenv("API_PASSWORD")
+
+chromedriver_autoinstaller.install()
 
 class TradeAction(Enum):
     BUY = 0
@@ -159,7 +160,10 @@ class InvestopediaAPI:
         ret = []
 
         for holding in holdings:
-            symbol = holding.find_element(By.CSS_SELECTOR, "a > span")
+            try:
+                symbol = holding.find_element(By.CSS_SELECTOR, "a > span")
+            except NoSuchElementException:
+                return []
             description = holding.find_element(By.CSS_SELECTOR, "div[data-cy='description']")
             current_price = holding.find_element(By.CSS_SELECTOR, "div[data-cy='current-price']")
             day_gain_loss = holding.find_element(By.CSS_SELECTOR, "div[data-cy='day-gain-dollar']").find_element(By.TAG_NAME, "div")
@@ -201,7 +205,11 @@ class InvestopediaAPI:
         except NoSuchElementException:
             pass
 
-        total_value = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='total-value']")
+        try:
+            total_value = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='total-value']")
+        except NoSuchElementException:
+            return {}
+        
         day_change_value = self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='day-change-value']").find_element(By.TAG_NAME, "div").text.split(" ")
         total_change_value =self.driver.find_element(By.CSS_SELECTOR, "div[data-cy='total-change-value']").find_element(By.TAG_NAME, "div").text.split(" ")
         ret = {}
