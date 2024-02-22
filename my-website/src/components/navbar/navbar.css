@@ -36,7 +36,7 @@
 .gpt3__navbar-links_container p,
 .gpt3__navbar-sign p,
 .gpt3__navbar-menu_container p {
-    color: #BAFF29;
+    color: #F1DAC4;
     font-family: var(--font-family);
     font-weight: 500;
     font-size: 18px;
@@ -47,18 +47,6 @@
     cursor: pointer;
 }
 
-/* .sign-in{
-    color: #BAFF29;
-    font-family: var(--font-family);
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 25px;
-    text-transform: capitalize;
-
-    margin: 0 1rem;
-    cursor: pointer;
-} */
-
 /* sign-in button */
 .sign-in,
 .register {
@@ -66,7 +54,7 @@
   border: 0 solid #e2e8f0;
   border-radius: 1.5rem;
   box-sizing: border-box;
-  color: #BAFF29;
+  color: #F1DAC4;
   cursor: pointer;
   display: inline-block;
   font-family: var(--font-family);
@@ -85,30 +73,14 @@
 }
 
 .sign-in:hover {
-  background-color: #111465;
+  background-color: #161833;
   color: #F1FFE7;
 }
 
 .register:hover {
-    background-color: #BAFF29;
-    color: #111465;
+    background-color: #F1DAC4;
+    color: #161833;
   }
-
-  
-
-/* .register {
-    padding: 0.5rem 1rem;
-    color: #1A1B41;
-    background: #BAFF29;
-    font-family: var(--font-family);
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 25px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    border-radius: 5px;
-} */
 
 
 .gpt3__navbar-menu {

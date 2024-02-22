@@ -16,19 +16,19 @@ a {
 
 .gradient__bg {
     /* ff 3.6+ */
-    background:-moz-radial-gradient(circle at 3% 25%, #1A1B41 0%, rgba(17, 3, 24, 1) 100%);
+    background:-moz-radial-gradient(circle at 3% 25%, #161833 0%, #0D0C1D 100%);
 
     /* safari 5.1+,chrome 10+ */
-    background:-webkit-radial-gradient(circle at 3% 25%, #1A1B41 0%, rgba(17, 3, 24, 1) 100%);
+    background:-webkit-radial-gradient(circle at 3% 25%, #161833 0%, #0D0C1D 100%);
 
     /* opera 11.10+ */
-    background:-o-radial-gradient(circle at 3% 25%, #1A1B41 0%, rgba(17, 3, 24, 1) 100%);
+    background:-o-radial-gradient(circle at 3% 25%, #161833 0%, #0D0C1D 100%);
 
     /* ie 10+ */
-    background:-ms-radial-gradient(circle at 3% 25%, #1A1B41 0%, rgba(17, 3, 24, 1) 100%);
+    background:-ms-radial-gradient(circle at 3% 25%, #161833 0%, #0D0C1D 100%);
 
     /* global 92%+ browsers support */
-    background:radial-gradient(circle at 3% 25%, #1A1B41 0%, rgba(17, 3, 24, 1) 100%);
+    background:radial-gradient(circle at 3% 25%, #161833 0%, #0D0C1D 100%);
 }
 
 .gradient__text {

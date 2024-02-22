@@ -1,23 +1,17 @@
 import React, {useState} from 'react'
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import "./navbar.css"
-import logo from '../../assets/Stocks.png';
+import logo from '../../assets/logo.png';
 import { Link } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 
 const Menu = () => (
   <>
-  <p><a href="#home">Home</a></p>
-  <p><a href="#introduction">Introduction</a></p>
-  <p><a href="#features">Features</a></p>
-  <p><a href="#blog">Library</a></p>
+  <p><a href="/">Home</a></p>
   </>
 )
 
 const user = localStorage.getItem("token");
-const decodedToken = jwtDecode(user);
-const username = decodedToken.exp;
-console.log(decodedToken);
 const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
   return (
@@ -33,10 +27,10 @@ const Navbar = () => {
       <div className = "gpt3__navbar-sign">
         {user ? (
         <button className="sign-in">
-          <Link>
-            {username}
-          </Link>
-        </button>
+        <Link to="/dashboard">
+          Dashboard
+        </Link>
+      </button>
         ):
         (
           <div>

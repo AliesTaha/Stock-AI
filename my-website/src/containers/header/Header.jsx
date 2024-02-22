@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import "./header.css";
-// import Scene from './scene';
 import { Link } from "react-router-dom";
 import stockimg from "../../assets/Stocks.png";
 
@@ -10,7 +9,7 @@ const Header = () => {
     <div className="gpt3__header section__padding" id="home">
       <div className="gpt3__header-content">
         <h1 className="gradient__text">StockAI</h1>
-        <p>Unlock the wisdom of GPT-4 Turbo for your stock decisions</p>
+        <p>Unlock the wisdom of GPT-4 Turbo for your stock decisions!</p>
 
         <div className="gpt3__header-content__input">
         {user ? (
@@ -20,14 +19,11 @@ const Header = () => {
         ):
         (
           <button type="button">
-            <Link to="/signup">Get Started</Link>
+            <Link to="/dashboard">Get Started</Link>
           </button>)}
         </div>
       </div>
       <div className="gpt3__header-image">
-        {/* <div className="scene-container">
-          <Scene />
-        </div> */}
         <img src={stockimg} alt = ""/>
       </div>
     </div>

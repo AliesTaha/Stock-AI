@@ -1,7 +1,7 @@
 .signup_container {
 	width: 100%;
 	min-height: 100vh;
-	background-color: #f5f5f5;
+	background-color: #0D0C1D;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -14,7 +14,7 @@
 	border-radius: 10px;
 	box-shadow: 0px 3px 3px -2px rgb(0 0 0 / 20%),
 		0px 3px 4px 0px rgb(0 0 0 / 14%), 0px 1px 8px 0px rgb(0 0 0 / 12%);
-	background-color: #7884a8;
+	background-color: #161833;
 }
 
 .left {
@@ -23,16 +23,17 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background-color: #FF934F;
+	background-color: #474973;
 	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
 }
 
 .left h1 {
 	margin-top: 0;
-	color: 91F5AD;
+	color: white;
 	font-size: 35px;
 	align-self: center;
+	font-family: var(--font-family);
 }
 
 .right {
@@ -54,7 +55,10 @@
 
 .form_container h1 {
 	font-size: 40px;
+	margin-bottom: 10px;
 	margin-top: 0;
+	font-family: var(--font-family);
+	color: #F1DAC4;
 }
 
 .input {
@@ -93,7 +97,7 @@
 }
 
 .green_btn {
-	background-color: #FF934F;
+	background-color: #F1DAC4;
 	color: 91F5AD;
 	margin: 10px;
 }
