@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "jwt-decode": "^4.0.0",
+    "concurrently": "^8.0.1"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run my-website\" \"npm run server\"",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "my-website": "cd my-website && npm start",
+    "server": "cd server && npm start",
+    "build": "cd my-website && npm run build"
+  }
+}
