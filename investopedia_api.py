@@ -165,7 +165,7 @@ class InvestopediaAPI:
             day_gain_loss = holding.find_element(By.CSS_SELECTOR, "div[data-cy='day-gain-dollar']").find_element(By.TAG_NAME, "div")
             purchase_price = holding.find_element(By.CSS_SELECTOR, "div[data-cy='purchase-price']")
             quantity = holding.find_element(By.CSS_SELECTOR, "div[data-cy='quantity']")
-            total_value = quantity = holding.find_element(By.CSS_SELECTOR, "div[data-cy='total-value']")
+            total_value = holding.find_element(By.CSS_SELECTOR, "div[data-cy='total-value']")
             total_gain_loss = holding.find_element(By.CSS_SELECTOR, "div[data-cy='total-gain-dollar']").find_element(By.TAG_NAME, "div")
 
             day_gain_loss = day_gain_loss.text.split("\n")
