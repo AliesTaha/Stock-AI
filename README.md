@@ -32,6 +32,6 @@ git clone https://github.com/AliesTaha/Stock-AI.git
 ### License
 Include information about the project's license here. If you haven't chosen a license yet, consider reviewing GitHub's licensing guide to decide.
 
-###Acknowledgments
+### Acknowledgments
 LabLab AI Hackathon for providing the opportunity to develop this project.
 All contributors and team members who have worked tirelessly on this project.
